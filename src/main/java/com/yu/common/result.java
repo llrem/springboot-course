@@ -11,7 +11,7 @@ public class result implements Serializable {
 
     public static result success(Object data){
         result result = new result();
-        result.setCode(200);
+        result.setCode(500);
         result.setMsg("success");
         result.setData(data);
         return result;
