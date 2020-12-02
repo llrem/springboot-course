@@ -1,11 +1,13 @@
-package com.yu.entity;
+package com.yu.common;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
-public class admin {
+@TableName("user_pwd")
+public class loginInfo {
     @JsonProperty(value = "username")
-    private String name;
+    private String id;
     private String password;
 }

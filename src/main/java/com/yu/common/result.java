@@ -8,11 +8,13 @@ public class result implements Serializable {
     private int code;
     private String msg;
     private Object data;
+    private String role;
 
-    public static result success(Object data){
+    public static result success(String role,Object data){
         result result = new result();
-        result.setCode(500);
+        result.setCode(200);
         result.setMsg("success");
+        result.setRole(role);
         result.setData(data);
         return result;
     }
