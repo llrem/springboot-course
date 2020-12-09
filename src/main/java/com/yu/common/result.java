@@ -19,9 +19,9 @@ public class result implements Serializable {
         return result;
     }
 
-    public static result failure(int code,String msg,Object data){
+    public static result failure(String msg,Object data){
         result result = new result();
-        result.setCode(code);
+        result.setCode(400);
         result.setMsg(msg);
         result.setData(data);
         return result;

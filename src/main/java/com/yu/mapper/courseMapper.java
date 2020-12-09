@@ -1,9 +1,9 @@
 package com.yu.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.yu.common.loginInfo;
+import com.yu.entity.course;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface loginInfoMapper extends BaseMapper<loginInfo> {
+public interface courseMapper extends BaseMapper<course> {
 }
