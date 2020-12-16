@@ -31,7 +31,7 @@ public class loginController {
         user user = userService.getById(loginInfo.getUsername());
 
         if (user == null) {
-            throw new UnknownAccountException("账户不存在");
+            return result.failure("账户不存在",loginInfo);
         }
         if(!loginInfo.getPassword().equals(user.getPassword())){
             return result.failure("用户名或密码错误",loginInfo);

@@ -18,13 +18,13 @@ public class ShiroConfig {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
 
-        Map<String, Filter> filterMap = new LinkedHashMap<>();
-        filterMap.put("jwt",new JwtFilter());
-        shiroFilterFactoryBean.setFilters(filterMap);
-
-        Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
-        filterChainDefinitionMap.put("/*", "anon");
-        shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
+//        Map<String, Filter> filterMap = new LinkedHashMap<>();
+//        filterMap.put("jwt",new JwtFilter());
+//        shiroFilterFactoryBean.setFilters(filterMap);
+//
+//        Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
+//        filterChainDefinitionMap.put("/*", "anon");
+//        shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
 
         return shiroFilterFactoryBean;
     }
