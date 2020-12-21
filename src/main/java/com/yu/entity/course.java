@@ -9,7 +9,7 @@ import lombok.Data;
 @TableName("course")
 @AllArgsConstructor
 public class course {
-    private String id;
+    private int id;
     private String name;
     @TableField("admin_id")
     private String adminId;

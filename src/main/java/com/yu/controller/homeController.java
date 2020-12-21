@@ -2,13 +2,15 @@ package com.yu.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yu.common.result;
-import com.yu.entity.admin;
-import com.yu.entity.course;
-import com.yu.entity.student;
+import com.yu.entity.*;
 import com.yu.service.courseService;
+import com.yu.service.course_noticeService;
+import com.yu.service.noticeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -16,9 +18,14 @@ import java.util.Map;
 public class homeController {
     @Autowired
     courseService courseService;
+    @Autowired
+    noticeService noticeService;
+    @Autowired
+    course_noticeService course_noticeService;
+
 
     @PostMapping("/home/admin")
-    public result course(@RequestBody admin admin){
+    public result courseAdmin(@RequestBody admin admin){
         QueryWrapper<course> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("admin_id",admin.getId());
         List<course> courseList = courseService.list(queryWrapper);
@@ -26,40 +33,59 @@ public class homeController {
     }
 
     @PostMapping("/home/student")
-    public result courses(@RequestBody student student){
+    public result courseStudent(@RequestBody student student){
         QueryWrapper<course> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("class",student.getClassId());
         List<course> courseList = courseService.list(queryWrapper);
-        return result.failure("student",courseList);
+        return result.success("student",courseList);
     }
 
     @PostMapping("/home/addCourse")
     public result addCourse(@RequestBody Map<String,Map<String,String>> map){
         Map<String,String> courseInfo = map.get("courseInfo");
         Map<String,String> adminInfo = map.get("admin");
-        String id="1000";
-        for(int i=1000;i<10000;i++){
-            id = i+"";
-            if(courseService.getById(id)==null){
-                break;
-            }
-            else{
-                i++;
-            }
-        }
-        course course = new course(id,courseInfo.get("name"),adminInfo.get("id"),adminInfo.get("classId"),
+        System.out.println(courseInfo.get("classId"));
+        course course = new course(0,courseInfo.get("name"),adminInfo.get("id"),courseInfo.get("classId"),
                 Integer.parseInt(courseInfo.get("credit")),Integer.parseInt(courseInfo.get("classHour")));
         courseService.save(course);
         return result.success("admin","success");
     }
 
     @PostMapping("/notice/admin")
-    public result notice(@RequestBody admin admin){
-        return null;
+    public result noticeAdmin(@RequestBody admin admin){
+        List<notice> noticeList = noticeService.list();
+        return result.success("admin",noticeList);
     }
 
     @PostMapping("/notice/student")
-    public result notice(@RequestBody student student){
-        return null;
+    public result noticeStudent(@RequestBody student student){
+        //查询课程班级号等于学生班级的课程
+        QueryWrapper<course> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("class",student.getClassId());
+        List<course> courseList = courseService.list(queryWrapper);
+
+        ArrayList<Integer> list = new ArrayList<>();
+        for(course course:courseList){
+            int id = course.getId();
+            list.add(id);
+        }
+
+        //查询course_notice表中课程号等于上面查询到的课程集合
+        QueryWrapper<course_notice> queryWrapper2 = new QueryWrapper<>();
+        queryWrapper2.in("course_id",list);
+        List<course_notice> course_noticeList = course_noticeService.list(queryWrapper2);
+
+        list.clear();
+        for(course_notice course_notice:course_noticeList){
+            int id = course_notice.getNoticeId();
+            list.add(id);
+        }
+
+        //查询notice
+        QueryWrapper<notice> queryWrapper3 = new QueryWrapper<>();
+        queryWrapper3.in("id",list);
+        List<notice> noticeList = noticeService.list(queryWrapper3);
+
+        return result.success("student",noticeList);
     }
 }
