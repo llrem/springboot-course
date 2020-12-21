@@ -4,9 +4,11 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @TableName("course")
+@NoArgsConstructor
 @AllArgsConstructor
 public class course {
     private int id;
@@ -18,4 +20,5 @@ public class course {
     private int credit;
     @TableField("class_hour")
     private int classHour;
+    private String state;
 }

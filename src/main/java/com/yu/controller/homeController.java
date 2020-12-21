@@ -23,13 +23,19 @@ public class homeController {
     @Autowired
     course_noticeService course_noticeService;
 
-
     @PostMapping("/home/admin")
     public result courseAdmin(@RequestBody admin admin){
         QueryWrapper<course> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("admin_id",admin.getId());
         List<course> courseList = courseService.list(queryWrapper);
-        return result.success("admin",courseList);
+
+        List<course> courses = new ArrayList<>();
+        for(course course:courseList){
+            if(course.getState().equals("show")){
+                courses.add(course);
+            }
+        }
+        return result.success("admin",courses);
     }
 
     @PostMapping("/home/student")
@@ -46,7 +52,7 @@ public class homeController {
         Map<String,String> adminInfo = map.get("admin");
         System.out.println(courseInfo.get("classId"));
         course course = new course(0,courseInfo.get("name"),adminInfo.get("id"),courseInfo.get("classId"),
-                Integer.parseInt(courseInfo.get("credit")),Integer.parseInt(courseInfo.get("classHour")));
+                Integer.parseInt(courseInfo.get("credit")),Integer.parseInt(courseInfo.get("classHour")),"show");
         courseService.save(course);
         return result.success("admin","success");
     }
